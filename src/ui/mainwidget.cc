@@ -4,7 +4,7 @@
 #include <QHBoxLayout>
 #include <QLayout>
 #include <QVBoxLayout>
-#include <qpushbutton.h>
+
 
 MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
   qDebug() << "Initializing MainWidget";
@@ -15,7 +15,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
 
   setObjectName("centralwidget");
   resize(common::MW_W, common::MW_H);
-  
+
   // init insert/find/delete button
   insertInput = new QLineEdit(this);
   deleteInput = new QLineEdit(this);
@@ -41,8 +41,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
   auto *layout = new QVBoxLayout(this);
   layout->addLayout(scroll_layout);
   layout->addLayout(edit_layout);
-  
-  //set widget layout
+
+  // set widget layout
   setLayout(layout);
 }
 
