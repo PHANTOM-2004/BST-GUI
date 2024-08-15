@@ -23,5 +23,6 @@ private:
   QScrollArea *scrollArea;
   RenderArea *renderArea;
   QWidget *centralwidget;
+  QAction openAction;
 };
 #endif // BSTMAINWIDGET_HPP

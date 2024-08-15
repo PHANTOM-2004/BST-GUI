@@ -80,3 +80,4 @@ CMakeLists.txt.user*
 !include/
 build/
 compile_commands.json
+docs/
