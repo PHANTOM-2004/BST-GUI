@@ -1,28 +1,27 @@
 #ifndef BSTMAINWINDOW_HPP
 #define BSTMAINWINDOW_HPP
 
-#include "renderarea.hpp"
+#include <QLineEdit>
 #include <QMainWindow>
-#include <QScrollArea>
 #include <QMessageBox>
+#include <QScrollArea>
 
-class BstMainWindow : public QMainWindow
-{
+class BstMainWindow : public QMainWindow {
   Q_OBJECT
 public:
-  explicit BstMainWindow (QWidget *parent = nullptr);
+  explicit BstMainWindow(QWidget *parent = nullptr);
 
 private:
-  QScrollArea *scrollArea;
-  RenderArea *renderArea;
-  QWidget *centralwidget;
-
-  QMessageBox * buildInfo;
-  QMessageBox * softwareInfo;
+  QAction *softwareInfoAction;
+  QAction *buildInfoAction;
+  QMessageBox *buildInfo;
+  QMessageBox *softwareInfo;
+  
+  void initMenuBar();
   void initBuildInfo();
   void initSoftwareInfo();
-  void showSoftwareInfo(); 
-  void showBuildInfo(); 
+  void showSoftwareInfo();
+  void showBuildInfo();
 
 signals:
 };
