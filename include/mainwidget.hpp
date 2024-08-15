@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QScrollArea>
 #include <QLineEdit>
+#include <QPushButton>
 
 class MainWidget : public QWidget {
   Q_OBJECT
@@ -17,9 +18,17 @@ private:
 
   QLineEdit *insertInput;
   QLineEdit *deleteInput;
+  QLineEdit *findInput;
+
+  QPushButton* insertButton;
+  QPushButton* deleteButton;
+  QPushButton* findButton;
 
   void initScrollArea();
   void initRenderArea();
+  void on_insert_button_clicked();
+  void on_delete_button_clicked();
+
 signals:
 };
 

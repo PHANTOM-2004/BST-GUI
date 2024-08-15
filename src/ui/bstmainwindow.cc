@@ -64,6 +64,11 @@ void BstMainWindow::initSoftwareInfo() {
 }
 
 void BstMainWindow::initMenuBar() {
+  // software info
+  initSoftwareInfo();
+  // set build info
+  initBuildInfo();
+
   QMenu *about = menuBar()->addMenu(tr("About"));
   about->addAction(softwareInfoAction);
   about->addAction(buildInfoAction);
@@ -75,13 +80,8 @@ BstMainWindow::BstMainWindow(QWidget *parent) : QMainWindow{parent} {
   resize(common::MW_W, common::MW_H);
 
   /*---------------------------------------------------------------------------*/
-  // software info
-  initSoftwareInfo();
-  // set build info
-  initBuildInfo();
   // menuBar
   initMenuBar();
-
   /*---------------------------------------------------------------------------*/
   auto centralwidget = new MainWidget(this);
   setCentralWidget(centralwidget);
