@@ -13,6 +13,23 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+execute_process(
+  COMMAND ${CMAKE_CXX_COMPILER} --version
+  OUTPUT_VARIABLE COMPILER_VERSION_OUTPUT
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+string(REPLACE "\n" "\\n" COMPILER_VERSION_OUTPUT_1L "${COMPILER_VERSION_OUTPUT}")
+message("compiler information:\n${COMPILER_VERSION_OUTPUT}")
+
+message("generator information: ${CMAKE_GENERATOR}")
+message("cmake information: version ${CMAKE_VERSION}")
+
+add_definitions(
+  -DCOMPILER_VERION="${COMPILER_VERSION_OUTPUT_1L}"
+  -DGENERATOR="${CMAKE_GENERATOR}"
+  -DCMAKE_VERSION="cmake version: ${CMAKE_VERSION}"
+)
+
 file(GLOB_RECURSE HPP_SOURCES "include/*.hpp")
 file(GLOB_RECURSE CC_SOURCES "src/*.cc")
 file(GLOB_RECURSE QT_RESOURCES "resources/*" "src/*.ui")
@@ -25,33 +42,33 @@ set(PROJECT_SOURCES
 
 message("Source files are listed below")
 foreach(f IN LISTS PROJECT_SOURCES)
-    message( "${f}")
+  message( "${f}")
 endforeach()
 message("Source files end")
 
 include_directories("include" "resources")
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(BST
+  qt_add_executable(BST
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET BST APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+  # Define target properties for Android with Qt 6 as:
+  #    set_property(TARGET BST APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+  #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+  # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html #target-creation
 else()
-    if(ANDROID)
-        add_library(BST SHARED
+  if(ANDROID)
+    add_library(BST SHARED
             ${PROJECT_SOURCES}
         )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(BST
+    # Define properties for Android with Qt 5 after find_package() calls as:
+    #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+  else()
+    add_executable(BST
             ${PROJECT_SOURCES}
         )
-    endif()
+  endif()
 endif()
 
 target_link_libraries(BST PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
@@ -78,5 +95,5 @@ install(TARGETS BST
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(BST)
+  qt_finalize_executable(BST)
 endif()
