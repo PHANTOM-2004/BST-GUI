@@ -27,7 +27,7 @@ message("cmake information: version ${CMAKE_VERSION}")
 add_definitions(
   -DCOMPILER_VERION="${COMPILER_VERSION_OUTPUT_1L}"
   -DGENERATOR="${CMAKE_GENERATOR}"
-  -DCMAKE_VERSION="cmake version: ${CMAKE_VERSION}"
+  -DCMAKE_VERSION="${CMAKE_VERSION}"
 )
 
 file(GLOB_RECURSE HPP_SOURCES "include/*.hpp")

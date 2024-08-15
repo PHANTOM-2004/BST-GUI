@@ -4,6 +4,7 @@
 #include "renderarea.hpp"
 #include <QMainWindow>
 #include <QScrollArea>
+#include <QMessageBox>
 
 class BstMainWindow : public QMainWindow
 {
@@ -16,6 +17,10 @@ private:
   RenderArea *renderArea;
   QWidget *centralwidget;
 
+  QMessageBox * buildInfo;
+  QMessageBox * softwareInfo;
+  void initBuildInfo();
+  void initSoftwareInfo();
   void showSoftwareInfo(); 
   void showBuildInfo(); 
 
