@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.25)
 
 project(BST VERSION 0.1 LANGUAGES CXX)
 
@@ -6,7 +6,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -31,11 +31,14 @@ add_definitions(
 )
 
 file(GLOB_RECURSE HPP_SOURCES "include/*.hpp")
+file(GLOB_RECURSE TCC_SOURCES "include/*.tcc")
 file(GLOB_RECURSE CC_SOURCES "src/*.cc")
 file(GLOB_RECURSE QT_RESOURCES "resources/*" "src/*.ui")
+set_source_files_properties(${TCC_SOURCES} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set(PROJECT_SOURCES
         ${HPP_SOURCES}
+        ${TCC_SOURCES}
         ${CC_SOURCES}
         ${QT_RESOURCES}
 )

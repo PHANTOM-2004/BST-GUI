@@ -1,3 +1,7 @@
+/// \file 
+/// \brief implementation of RenderArea
+///
+
 #include "renderarea.hpp"
 #include "common.hpp"
 #include <QPainter>
@@ -7,8 +11,7 @@ RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
 }
 
 /// \brief overwrite the paintEvent to draw graph
-/// \param get QPaintEvent type event
-/// \return none
+/// \param event get QPaintEvent type event
 void RenderArea::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   painter.setRenderHints(

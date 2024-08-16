@@ -57,6 +57,9 @@ private:
   /// \brief do deletion when delete Button is clicked
   void on_delete_button_clicked();
 
+  /// \brief do deletion when find Button is clicked
+  void on_find_button_clicked();
+
 signals:
 };
 
