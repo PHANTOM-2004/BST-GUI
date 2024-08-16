@@ -1,6 +1,6 @@
 /// \file
 /// \brief definition of BstMainWindow
-
+#pragma once
 
 #ifndef BSTMAINWINDOW_HPP
 #define BSTMAINWINDOW_HPP

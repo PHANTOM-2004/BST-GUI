@@ -1,6 +1,8 @@
 /*! \file 
  *  \brief definition of MainWidget
  */
+#pragma once
+
 #ifndef MAINWIDGET_HPP
 #define MAINWIDGET_HPP
 

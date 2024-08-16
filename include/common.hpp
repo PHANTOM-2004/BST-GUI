@@ -1,6 +1,10 @@
-
+/// \file
+/// \brief some constant for global usage
+///
 #pragma once
 
+#ifndef __COMMON_HPP__
+#define __COMMON_HPP__
 namespace common {
 enum MAINWINDOW {
   MW_W = 800,
@@ -18,3 +22,4 @@ enum SCROLLAREA {
 };
 
 }; // namespace common
+#endif

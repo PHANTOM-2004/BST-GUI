@@ -31,10 +31,10 @@ add_definitions(
 )
 
 file(GLOB_RECURSE HPP_SOURCES "include/*.hpp")
-file(GLOB_RECURSE TCC_SOURCES "include/*.tcc")
+file(GLOB_RECURSE TCC_SOURCES "src/*.tcc")
 file(GLOB_RECURSE CC_SOURCES "src/*.cc")
 file(GLOB_RECURSE QT_RESOURCES "resources/*" "src/*.ui")
-set_source_files_properties(${TCC_SOURCES} PROPERTIES HEADER_FILE_ONLY TRUE)
+# set_source_files_properties(${TCC_SOURCES} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set(PROJECT_SOURCES
         ${HPP_SOURCES}
