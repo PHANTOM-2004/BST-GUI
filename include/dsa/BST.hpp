@@ -13,6 +13,7 @@
 
 namespace dsa {
 
+/// \brief binary search tree template
 template <Comparable T> class BST {
 
 public:
@@ -29,7 +30,7 @@ public:
   /// also the function set the _hit, which is
   /// designed for later insertion of deletion
   ///
-  /// \param val the value to insert
+  /// \param val the value to search for
   /// \return return the refernce of the node found
   virtual BiTNode<T> *&search(T const &val);
 
@@ -38,39 +39,88 @@ public:
   /// return the pointer to the node inserted,
   /// no matter whether the value existed or not
   ///
+  /// \param val the value to insert
   /// \return pointer to the node inserted
   virtual BiTNode<T> *insert(T const &val);
 
   /// \brief delete a node
+  ///
+  /// return whether or not val is deleted
+  /// \param val the value to delete
+  /// \return success or fail
   virtual bool erase(T const &val);
 
   /// \brief judge node in tree
   bool exist(BiTNode<T> const *target) const;
 
+
+  /// \brief const getter for root
   inline BiTNode<T> const *root() const { return _root; }
 
+  /// \brief const getter for tree _size
+  ///
+  /// it record the number of nodes in the tree
+  /// \return the size of the tree
   inline int size() const {
     /// assertion of the size
     Q_ASSERT((!_size && !_root) || (_size && _root));
     return _size;
   };
 
+  /// \brief return true the tree is empty
+  /// \return true when the tree is empty
   inline bool empty() const {
     /// assertion of the size
     Q_ASSERT((!_size && !_root) || (_size && _root));
     return !_size;
   }
 
+  /// \brief getter for the tree height
+  /// \return the size of the tre
   inline int height() const { return BiTNode<T>::height(root()); }
 
+  /// \brief mid traverse
+  /// \param f visit function for data
   void mid_traverse(std::function<void(T const &data)> f) const;
 
+  /// \brief mid traverse
+  /// \param f visit function for node
+  void mid_traverse(std::function<void(BiTNode<T> const *node)> f) const;
+
 private:
+
+  /// \brief clear the tree rooted as rt
+  ///
+  /// \param rt the root of the subtree to clear
+  /// \return return the node it clears
   int clear(BiTNode<T> *rt);
+
+  /// \brief mid traverse
+  /// \param rt the root of the subtree to visit
+  /// \param f visit function for data
   void mid_traverse(std::function<void(T const &data)> f,
                     BiTNode<T> const *rt) const;
 
+  /// \brief mid traverse
+  /// \param rt the root of the subtree to visit
+  /// \param f visit function for node
+  void mid_traverse(std::function<void(BiTNode<T> const *node)> f,
+                    BiTNode<T> const *rt) const;
+
+  /// \brief helper function
+  ///
+  /// set hot as the father of the node deleted, and delete
+  /// the node at target
+  ///
+  /// \param target refernce to the node to delete
+  /// \param hot the father of the node to delete
   bool erase_at(BiTNode<T> *&target, BiTNode<T> *&hot);
+
+  /// \brief check if target exist in subtree rt
+  ///
+  /// \param rt the root of the subtree
+  /// \param target the node to check
+  /// \return return true when exist
   bool exist(BiTNode<T> const *target, BiTNode<T> const *rt) const;
 
 protected:
@@ -236,6 +286,24 @@ void BST<T>::mid_traverse(std::function<void(T const &data)> f,
   mid_traverse(f, rt->left());
   f(rt->data());
   mid_traverse(f, rt->right());
+}
+
+template <Comparable T>
+void BST<T>::mid_traverse(std::function<void(BiTNode<T> const *node)> f,
+                          BiTNode<T> const *rt) const {
+  if (!rt)
+    return;
+
+  mid_traverse(f, rt->left());
+  f(rt);
+  mid_traverse(f, rt->right());
+}
+
+template <Comparable T>
+void BST<T>::mid_traverse(std::function<void(BiTNode<T> const *node)> f) const {
+  if (empty())
+    return;
+  mid_traverse(f);
 }
 
 template <Comparable T>

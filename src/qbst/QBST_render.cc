@@ -1,6 +1,6 @@
+#include "common.hpp"
 #include "qbst/QBST.hpp"
-#include <qassert.h>
-#include <qpainter.h>
+
 
 using qbst::QBST;
 using qbst::QBST_data;
@@ -8,23 +8,6 @@ using qbst::QBST_node;
 
 void QBST::set_painter(QPainter *painter) const { this->painter = painter; }
 
-int QBST::get_leftmost_rpos(int const h) const {
-  Q_ASSERT(h < 10);
-
-  int res = 0;
-
-  // for level h, we add 2 ^ h * base_width offset
-  int H = h;
-  QBST_node const *p = root();
-  while (p) {
-    res -= (1 << H) * base_width;
-    p = p->left();
-    H--;
-  }
-
-  Q_ASSERT(res <= 0);
-  return res;
-}
 
 void QBST::get_next_center(QPoint const &center, QPoint &lcenter,
                            QPoint &rcenter, int const h, QBST_node const *rt) {
@@ -80,3 +63,28 @@ void QBST::set_position_helper(QPoint const &center, QBST_node *rt,
   set_position_helper(rcenter, rt->_right, h - 1);
 }
 
+void QBST::render(QPoint const &center, QPainter *painter) {
+  auto render_node = [painter](QBST_node const *node) {
+    painter->setRenderHints(
+        QPainter::Antialiasing | QPainter::SmoothPixmapTransform, true);
+
+    auto const &data = node->data();
+
+    painter->setPen(QPen(data.get_eg_color(), common::LINE_WIDTH));
+
+    // draw the line
+    if (node->left()) {
+      painter->drawLine(data.position(), node->left()->data().position());
+    }
+
+    if (node->right()) {
+      painter->drawLine(data.position(), node->right()->data().position());
+    }
+
+    data.render(painter, radius);
+  };
+
+  set_position(center);
+
+  mid_traverse(render_node);
+}
