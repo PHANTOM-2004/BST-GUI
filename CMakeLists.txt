@@ -1,18 +1,83 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(BST VERSION 0.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.10)
+project(MyProject)
 
+message("[CHECK]Running environment checking")
+######################################################################
+# check platform
+if(NOT CMAKE_SYSTEM_NAME MATCHES "Linux")
+  message(FATAL_ERROR "This project only supports Linux platforms.")
+endif()
+
+######################################################################
+# check CXX compiler
+# compiler must be g++ or clang++
+# g++
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  #g++ version >= 13
+  execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} --version
+    OUTPUT_VARIABLE GCC_VERSION_OUTPUT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  string(REGEX MATCH "[0-9]+\\.[0-9]+" GCC_VERSION ${GCC_VERSION_OUTPUT})
+  list(GET GCC_VERSION 0 GCC_MAJOR_VERSION)
+  message("g++ major version: ${GCC_MAJOR_VERSION}")
+  if(${GCC_MAJOR_VERSION} LESS 13)
+    message(FATAL_ERROR "[FAIL]g++ major version must be at least 13.")
+  endif()
+
+  # clang++
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # clang++ version >= 14
+  execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} --version
+    OUTPUT_VARIABLE CLANG_VERSION_OUTPUT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  string(REGEX MATCH "[0-9]+\\.[0-9]+" CLANG_VERSION ${CLANG_VERSION_OUTPUT})
+  list(GET CLANG_VERSION 0 CLANG_MAJOR_VERSION)
+  message("clang++ major version: ${CLANG_MAJOR_VERSION}")
+  if(${CLANG_MAJOR_VERSION} LESS 14)
+    message(FATAL_ERROR
+    "[FAIL]clang++ major version must be at least 14.Current: ${CLANG_MAJOR_VERSION}")
+  endif()
+
+  # error
+else()
+  message(FATAL_ERROR
+  "[FAIL]This project requires g++ or clang++ as the compiler.")
+endif()
+
+######################################################################
+# check qt version
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+
+message("Qt Version: ${QT_VERSION}")
+if(${QT_VERSION} LESS 6.1.0 AND ${QT_VERSION} LESS 7.0.0)
+  message(FATAL_ERROR
+  "Qt version should 6.1.0 >= and < 7.0.0. Current: ${QT_VERSION}")
+endif()
+
+message("[PASS]Compiler and platform checks passed. Continuing with configuration...")
+
+
+######################################################################
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+######################################################################
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+######################################################################
 execute_process(
   COMMAND ${CMAKE_CXX_COMPILER} --version
   OUTPUT_VARIABLE COMPILER_VERSION_OUTPUT
@@ -28,13 +93,18 @@ add_definitions(
   -DCOMPILER_VERION="${COMPILER_VERSION_OUTPUT_1L}"
   -DGENERATOR="${CMAKE_GENERATOR}"
   -DCMAKE_VERSION="${CMAKE_VERSION}"
+  -DQT_VERSION="${QT_VERSION}"
 )
 
+######################################################################
+add_compile_options(-Wall -Werror)
+
+######################################################################
 file(GLOB_RECURSE HPP_SOURCES "include/*.hpp")
-file(GLOB_RECURSE TCC_SOURCES "src/*.tcc")
 file(GLOB_RECURSE CC_SOURCES "src/*.cc")
 file(GLOB_RECURSE QT_RESOURCES "resources/*" "src/*.ui")
-# set_source_files_properties(${TCC_SOURCES} PROPERTIES HEADER_FILE_ONLY TRUE)
+
+include_directories("include" "resources")
 
 set(PROJECT_SOURCES
         ${HPP_SOURCES}
@@ -42,61 +112,22 @@ set(PROJECT_SOURCES
         ${CC_SOURCES}
         ${QT_RESOURCES}
 )
-
 message("Source files are listed below")
 foreach(f IN LISTS PROJECT_SOURCES)
-  message( "${f}")
+  message("${f}")
 endforeach()
 message("Source files end")
 
-include_directories("include" "resources")
-
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-  qt_add_executable(BST
+######################################################################
+qt_add_executable(BST
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-  # Define target properties for Android with Qt 6 as:
-  #    set_property(TARGET BST APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-  #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-  # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html #target-creation
-else()
-  if(ANDROID)
-    add_library(BST SHARED
-            ${PROJECT_SOURCES}
-        )
-    # Define properties for Android with Qt 5 after find_package() calls as:
-    #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-  else()
-    add_executable(BST
-            ${PROJECT_SOURCES}
-        )
-  endif()
-endif()
 
-target_link_libraries(BST PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(BST PRIVATE Qt6::Widgets)
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
-if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.BST)
-endif()
-set_target_properties(BST PROPERTIES
-    ${BUNDLE_ID_OPTION}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
+qt_finalize_executable(BST)
 
-include(GNUInstallDirs)
-install(TARGETS BST
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
 
-if(QT_VERSION_MAJOR EQUAL 6)
-  qt_finalize_executable(BST)
-endif()
+######################################################################
+add_subdirectory(tests)
