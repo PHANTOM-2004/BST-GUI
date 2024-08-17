@@ -1,4 +1,4 @@
-/// \file 
+/// \file
 /// \brief implementation of RenderArea
 ///
 
@@ -6,8 +6,8 @@
 #include "common.hpp"
 #include <QPainter>
 
-RenderArea::RenderArea(QWidget *parent) : QWidget{parent} { 
-  resize(common::RA_W, common::RA_H); 
+RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
+  resize(common::RA_W, common::RA_H);
 }
 
 /// \brief overwrite the paintEvent to draw graph
@@ -23,7 +23,13 @@ void RenderArea::paintEvent(QPaintEvent *event) {
   painter.drawRect(10, 10, 100, 400);
   painter.drawRect(20, 20, 400, 300);
 
-  painter.setPen(QPen(Qt::green, 5));
-  painter.setBrush(Qt::red);
+  painter.setPen(QPen(Qt::red, 5));
+  painter.setBrush(Qt::blue);
   painter.drawEllipse(50, 150, 400, 200);
+
+  QFont font = painter.font();
+  font.setPointSize(common::FONT_SIZE);
+  painter.setFont(font);
+
+  painter.drawText(50 + 400 / 2, 150 + 200 / 2, "Hell World!");
 }

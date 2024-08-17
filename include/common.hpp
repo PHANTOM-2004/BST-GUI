@@ -21,5 +21,9 @@ enum SCROLLAREA {
   SA_H = MW_H * 4 / 5,
 };
 
+enum{
+  FONT_SIZE = 13,//pt
+};
+
 }; // namespace common
 #endif

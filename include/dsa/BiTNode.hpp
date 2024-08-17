@@ -8,6 +8,10 @@
 #include <algorithm>
 #include <concepts>
 
+namespace qbst {
+class QBST;
+};
+
 namespace dsa {
 
 /// \brief concept for binary tree node type
@@ -27,6 +31,7 @@ template <Comparable T> class BST;
 template <Comparable T> class BiTNode {
   // only instancialize when basic arithmetic type or string
   friend class BST<T>;
+  friend class qbst::QBST;
 
 public:
   BiTNode(T const &val, BiTNode<T> *parent = nullptr,
@@ -57,8 +62,7 @@ public:
   void update_height_above();
 
   /// \brief get the height of the node, empty node is -1
-  static inline int height(BiTNode<T> const*node);
-
+  static inline int height(BiTNode<T> const *node);
 
 protected:
   /// \brief store the height of the node
@@ -77,7 +81,7 @@ protected:
 template <Comparable T>
 BiTNode<T>::BiTNode(T const &val, BiTNode<T> *parent, BiTNode<T> *lChild,
                     BiTNode<T> *rChild)
-    : _data(val), _parent(parent),_left(lChild), _right(rChild){};
+    : _data(val), _parent(parent), _left(lChild), _right(rChild){};
 
 template <Comparable T> BiTNode<T> *BiTNode<T>::succ() {
   BiTNode<T> *res = this;
@@ -96,7 +100,7 @@ template <Comparable T> BiTNode<T> *BiTNode<T>::succ() {
     res = res->_parent;
   while (res->is_right());
   // if res is nullptr, it means "this" is the last one
-  
+
   return res;
 }
 

@@ -1,5 +1,4 @@
-
-set(TESTS_SOURCES bst_test.cc)
+set(TESTS_SOURCES bst_test.cc bst_test.hpp)
 
 qt_add_executable(BST_TEST
         MANUAL_FINALIZATION

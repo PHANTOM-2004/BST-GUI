@@ -12,7 +12,9 @@ BSTtest::BSTtest(BST_type *tree, int const N) : N(N), tree(tree) {
 void BSTtest::insert_test() {
   // insert
   for (auto const &i : nums) {
-    std::cout << "insert: " << i << std::endl;
+    if (N < 10000)
+      std::cout << "insert: " << i << std::endl;
+
     auto const node_ins = node(std::to_string(i).c_str());
     auto const res = tree->insert(node_ins);
     Q_ASSERT(res->data() == node_ins);
@@ -30,9 +32,13 @@ void BSTtest::delete_test() {
       continue;
     i++;
     vis[pos] = 1;
-    std::cout << "delete: " << nums[pos] << " ";
+
     int const ret = tree->erase(get_node(nums[pos]));
-    std::cout << ret << std::endl;
+
+    if (N < 10000) {
+      std::cout << "delete: " << nums[pos] << " ";
+      std::cout << ret << std::endl;
+    }
     cnt -= ret;
   }
   print_property();
@@ -54,7 +60,9 @@ void BSTtest::search_test() {
       ans = std::binary_search(nums.begin(), nums.end(), target);
     }
     bool const ret = !!tree->search(get_node(target));
-    std::cout << (ret ? "YES" : "NO") << '\n';
+
+    if (N < 10000)
+      std::cout << (ret ? "YES" : "NO") << '\n';
     Q_ASSERT(ret == ans);
   }
 }
@@ -80,13 +88,13 @@ void BSTtest::print_property() const {
   std::cout << split;
 }
 
-void BSTtest::print(QBVNode const &v) {
+void BSTtest::print(node const &v) {
   std::cout << v.str().toStdString() << '\n';
 };
 
 int main() {
   std::cout << "BST test\n";
   BST_type T1;
-  BSTtest test1(&T1, 10000);
+  BSTtest test1(&T1, 100000);
   test1.run_test();
 }

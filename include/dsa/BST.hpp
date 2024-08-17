@@ -73,7 +73,7 @@ private:
   bool erase_at(BiTNode<T> *&target, BiTNode<T> *&hot);
   bool exist(BiTNode<T> const *target, BiTNode<T> const *rt) const;
 
-private:
+protected:
   /// \brief record the node number of the tree
   int _size = 0;
 

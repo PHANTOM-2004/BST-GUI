@@ -3,11 +3,12 @@
 #ifndef __BST_TEST_HPP__
 #define __BST_TEST_HPP__
 #include "dsa/BST.hpp"
-#include "dsa/QBVNode.hpp"
+#include "qbst/QVBNode.hpp"
+
 using dsa::BST;
-using dsa::QBVNode;
-using BST_type = BST<QBVNode>;
-using node = QBVNode;
+using qbst::QVBNode;
+using BST_type = BST<QVBNode>;
+using node = QVBNode;
 
 inline const char *split = "=========================================\n";
 
