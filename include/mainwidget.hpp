@@ -64,6 +64,8 @@ private:
   /// \brief do deletion when find Button is clicked
   void on_find_button_clicked();
 
+  void center_scroll_on_target(QPoint const& target);
+
 signals:
 };
 

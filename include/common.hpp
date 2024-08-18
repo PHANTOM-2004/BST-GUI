@@ -15,8 +15,8 @@ enum MAINWINDOW {
 
 /// \brief the size of render area
 enum RENDERAREA {
-  RA_W = 2000,
-  RA_H = 2000,
+  RA_W = 1500,
+  RA_H = 1200,
 };
 
 /// \brief the size of scroll area

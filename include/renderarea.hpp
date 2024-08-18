@@ -31,6 +31,8 @@ public:
 
   void adjust_render_size();
 
+  void focus_on_target();
+
 protected:
   /// \brief overwrite the virtual function to paint
   void paintEvent(QPaintEvent *event) override;
@@ -42,6 +44,7 @@ protected:
   QTimer *timer;
 
 signals:
+  void center_on_target(QPoint const& target);
 };
 
 #endif // RENDERAREA_HPP

@@ -8,8 +8,8 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QLayout>
+#include <QScrollBar>
 #include <QVBoxLayout>
-#include <qlineedit.h>
 
 MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
   qDebug() << "Initializing MainWidget";
@@ -53,6 +53,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
   auto *scroll_layout = new QHBoxLayout;
   scroll_layout->addWidget(scrollArea);
 
+  connect(renderArea, &RenderArea::center_on_target, this,
+          &MainWidget::center_scroll_on_target);
+
   // hlayout + hlayout => vlayout
   auto *layout = new QVBoxLayout(this);
   layout->addLayout(scroll_layout);
@@ -65,19 +68,22 @@ MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
 void MainWidget::on_insert_button_clicked() {
   qDebug() << "insert clicked";
   qDebug() << insertInput->text();
-  this->renderArea->update_handler(RenderArea::UPDATE_INSERT, insertInput->text());
+  this->renderArea->update_handler(RenderArea::UPDATE_INSERT,
+                                   insertInput->text());
 }
 
 void MainWidget::on_delete_button_clicked() {
   qDebug() << "delete clicked";
   qDebug() << deleteInput->text();
-  this->renderArea->update_handler(RenderArea::UPDATE_DELETE, deleteInput->text());
+  this->renderArea->update_handler(RenderArea::UPDATE_DELETE,
+                                   deleteInput->text());
 }
 
 void MainWidget::on_find_button_clicked() {
   qDebug() << "find clicked";
   qDebug() << findInput->text();
-  this->renderArea->update_handler(RenderArea::UPDATE_SEARCH, findInput->text());
+  this->renderArea->update_handler(RenderArea::UPDATE_SEARCH,
+                                   findInput->text());
 }
 
 void MainWidget::initRenderArea() { renderArea = new RenderArea(this); }
@@ -91,4 +97,21 @@ void MainWidget::initScrollArea() {
   scrollArea->setWidgetResizable(false);
   scrollArea->horizontalScrollBar();
   scrollArea->verticalScrollBar();
+}
+
+void MainWidget::center_scroll_on_target(QPoint const &target) {
+  // center the scroll bar on target
+
+  auto const view_size = scrollArea->viewport()->size();
+  auto const widget_size = scrollArea->widget()->size();
+
+  int x_off = target.x() - view_size.width() / 2;
+  int y_off = target.y() - view_size.height() / 2;
+
+  x_off = std::max(0, std::min(x_off, widget_size.width() - view_size.width()));
+  y_off =
+      std::max(0, std::min(y_off, widget_size.height() - view_size.height()));
+
+  scrollArea->horizontalScrollBar()->setValue(x_off);
+  scrollArea->verticalScrollBar()->setValue(y_off);
 }

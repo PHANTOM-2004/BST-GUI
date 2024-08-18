@@ -39,9 +39,21 @@ RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
 
   qDebug() << width() << height();
 
+  tree->set_color();
+
   adjust_render_size();
 
-  tree->set_color();
+  focus_on_target();
+}
+
+void RenderArea::focus_on_target() {
+  // if there is a target, focus on target
+  //
+  // else focus on root
+  qbst::QBST_node const *focus = hl_valid ? target : tree->root();
+
+  // send the signal
+  emit center_on_target(focus->data().position());
 }
 
 void RenderArea::adjust_render_size() {
@@ -50,8 +62,21 @@ void RenderArea::adjust_render_size() {
 
   QPoint const root_pos = tree->get_center_position();
   QRect const bound_box = tree->get_tree_bound();
-  qDebug () << bound_box;
+  qDebug() << bound_box;
   qDebug() << root_pos;
+
+  int const new_w = bound_box.width() + tree->horizontal_interval() * 2;
+  int const new_h = bound_box.height() + tree->vertival_interval() * 2;
+
+  // shift the tree
+  QPoint const offset =
+      -(bound_box.topLeft() -
+        QPoint(tree->horizontal_interval(), tree->dis_from_ceil()));
+  tree->translate_tree(offset);
+
+  if (new_h > height() && new_w > width()) {
+    resize(new_w, new_h);
+  }
 }
 
 void RenderArea::rerender() {
@@ -59,9 +84,7 @@ void RenderArea::rerender() {
   //
   adjust_render_size();
 
-  // we need to focus on the target
-  if (hl_valid) {
-  }
+  focus_on_target();
 
   // we must repaint here, or it will not update
   this->repaint();
