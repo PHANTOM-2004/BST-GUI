@@ -31,7 +31,8 @@ enum {
   LINE_WIDTH = 3,
   MAX_INPUT_LEN = 10,
   NODE_RADIUS = 40,
-  NODE_INTERVAL = 15,
+  NODE_H_INTERVAL = 10,
+  NODE_V_INTERVAL = 15,
 };
 
 enum {

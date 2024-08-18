@@ -8,8 +8,7 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QTimer>
-#include <chrono>
-#include <ctime>
+#include <qdebug.h>
 
 RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
   resize(common::RA_W, common::RA_H);
@@ -18,6 +17,7 @@ RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
 
   connect(timer, &QTimer::timeout, this, &RenderArea::unhighlight);
 
+  // init the tree with some data here
   tree->insert(QBST_data("50"));
   tree->insert(QBST_data("150"));
   tree->insert(QBST_data("260"));
@@ -37,16 +37,31 @@ RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
   tree->insert(QBST_data("500"));
   tree->insert(QBST_data("ZZZZ"));
 
-  tree->set_position({1000, 50});
+  qDebug() << width() << height();
+
+  adjust_render_size();
+
   tree->set_color();
+}
+
+void RenderArea::adjust_render_size() {
+  // suppose we place it in the center
+  tree->set_position({width() / 2, tree->dis_from_ceil()});
+
+  QPoint const root_pos = tree->get_center_position();
+  QRect const bound_box = tree->get_tree_bound();
+  qDebug () << bound_box;
+  qDebug() << root_pos;
 }
 
 void RenderArea::rerender() {
   // rerender when there is insertion/deletion/searching
-  qDebug() << "Rerender begin";
-  tree->set_position(
-      {common::RA_W / 2, common::NODE_INTERVAL + common::NODE_RADIUS});
-  qDebug() << "Rerender end";
+  //
+  adjust_render_size();
+
+  // we need to focus on the target
+  if (hl_valid) {
+  }
 
   // we must repaint here, or it will not update
   this->repaint();
@@ -59,6 +74,7 @@ void RenderArea::unhighlight() {
   tree->set_color();
   hl_valid = false;
 
+  // repaint immediately
   this->repaint();
 }
 
@@ -66,9 +82,11 @@ void RenderArea::highlight() {
   hl_valid = true;
   tree->set_highlight_color(target);
 
+  // set up the timer
   timer->setInterval(common::WAITING_TIME);
   timer->start();
 
+  // repaint immediately
   this->repaint();
 }
 
@@ -128,5 +146,5 @@ void RenderArea::paintEvent(QPaintEvent *event) {
   // painter.drawText(50 + 400 / 2, 150 + 200 / 2, "Hell World!");
   //
 
-  tree->render({1000, 10}, &painter);
+  tree->render(&painter);
 }

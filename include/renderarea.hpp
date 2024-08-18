@@ -3,13 +3,11 @@
 ///
 #pragma once
 
-#include <chrono>
 #ifndef RENDERAREA_HPP
 #define RENDERAREA_HPP
 
 #include "qbst/QBST.hpp"
 #include <QWidget>
-#include <chrono>
 
 using qbst::QBST;
 using qbst::QBST_data;
@@ -30,6 +28,8 @@ public:
   void unhighlight();
 
   void update_handler(U_signals const signal, QString const &text);
+
+  void adjust_render_size();
 
 protected:
   /// \brief overwrite the virtual function to paint
