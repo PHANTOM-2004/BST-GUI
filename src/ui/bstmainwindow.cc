@@ -68,7 +68,10 @@ void BstMainWindow::initBuildInfo() {
     <i>%2</i><br>  
     <br>
     <strong>CMake Version:</strong><br>  
-    <i>%3</i> 
+    <i>%3</i><br>
+    <br>
+    <strong>Qt Version:</strong><br>  
+    <i>%4</i> 
 </div>  
 )";
   static QString const compiler_info =
@@ -76,12 +79,13 @@ void BstMainWindow::initBuildInfo() {
   static QString const generator_info =
       QString(GENERATOR).replace("\n", newline);
   static QString const cmake_version = QString(CMAKE_VERSION);
+  static QString const qt_version = QString(QT6_VERSION);
 
   buildInfo = new QMessageBox(this);
   buildInfo->setWindowTitle(tr("Build Information"));
   buildInfo->setTextFormat(Qt::RichText); // show as html
-  buildInfo->setText(
-      buildInfoTextFmt.arg(compiler_info, generator_info, cmake_version));
+  buildInfo->setText(buildInfoTextFmt.arg(compiler_info, generator_info,
+                                          cmake_version, qt_version));
 
   buildInfoAction = new QAction(tr("build information"), this);
   buildInfoAction->setStatusTip("Building environment");

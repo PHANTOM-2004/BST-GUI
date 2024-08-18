@@ -92,7 +92,7 @@ add_definitions(
   -DCOMPILER_VERION="${COMPILER_VERSION_OUTPUT_1L}"
   -DGENERATOR="${CMAKE_GENERATOR}"
   -DCMAKE_VERSION="${CMAKE_VERSION}"
-  -DQT_VERSION="${QT_VERSION}"
+  -DQT6_VERSION="${QT_VERSION}"
 )
 
 ######################################################################

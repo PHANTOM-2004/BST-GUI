@@ -121,10 +121,13 @@ void RenderArea::update_handler(U_signals const signal, QString const &text) {
     ret = tree->erase(text);
     if (!ret)
       QMessageBox::information(this, tr("Information"), "deletion failed");
+    else // deletion might change root
+      tree->set_color();
     break;
 
   case UPDATE_INSERT:
     target = tree->insert(text);
+    tree->set_color();
     highlight();
     break;
 
