@@ -1,4 +1,7 @@
-
+/// \file
+/// \brief the immplementation of the function
+/// related to the update of QBST
+///
 #include "qbst/QBST.hpp"
 
 using qbst::QBST;

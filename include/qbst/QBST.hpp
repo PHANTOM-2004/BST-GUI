@@ -52,8 +52,12 @@ public:
   ///
   QBST_node *&search(QBST_data const &val) override;
 
+  /// \brief get the bounding box of the tree
+  /// \return the QRect as bounding box
   QRect get_tree_bound() const;
 
+  /// \brief translate the tree
+  /// \param offset the offset vector
   void translate_tree(QPoint const &offset);
 
   /// \brief insert a node
@@ -75,7 +79,6 @@ public:
 
   /// \brief render the entire tree
   ///
-  /// \param center the position of the root
   /// \param painter painter from painEvent()
   void render(QPainter *painter);
 
@@ -85,16 +88,40 @@ public:
   /// \param center the position of the root
   void set_position(QPoint const &center);
 
+  /// \brief get the center position of the tree
+  /// it is actually the position of root
+  /// \return return the position
   QPoint const &get_center_position() const { return center_position; }
 
+  /// \brief set the color of the node
+  /// according to
+  /// 1. root
+  /// 2. is_left()
+  /// 3. is_right
   void set_color();
 
+  /// \brief set the color of a singl node
+  /// according to
+  /// 1. root
+  /// 2. is_left()
+  /// 3. is_right
+  /// \param node the node to set
   void set_node_color(QBST_node *node);
 
+  /// \brief highlight a node
+  /// \brief the node to highlight
   void set_highlight_color(QBST_node *node);
 
+  /// \brief getter for BASE_HEIGHT
+  /// \return trivial
   static constexpr int vertival_interval() { return BASE_HEIGHT; }
+
+  /// \brief getter for BASE_WIDTH
+  /// \return trivial
   static constexpr int horizontal_interval() { return BASE_WIDTH; }
+
+  /// \brief getter for DIS_FROM_CEIL
+  /// \return trivial
   static constexpr int dis_from_ceil() { return DIS_FROM_CEIL; }
 
 private:
@@ -103,21 +130,21 @@ private:
   /// after insertion/deletion, the area that the tree covers will
   /// change. we need to update through this function
   ///
-  /// \param center the position of the root
+  /// \param rt the position of the root
   void adjust_position(QBST_node *rt);
 
+  /// \brief translate the subtree
+  /// \param offset the offset vector
+  /// \param rt the root of the subtree
   void translate_subtree(QPoint const &offset, QBST_node *rt);
 
   /// \brief helper function to get width
-  /// \param center position of param rt
   /// \param rt current node to set
-  /// \param h current height
   void get_subtree_bound(QBST_node const *rt) const;
 
   /// \brief helper function to get position
   /// \param center position of param rt
   /// \param rt current node to set
-  /// \param h current height
   void estimate_position(QPoint const &center, QBST_node *rt);
 
   /// \brief helper function for get_width and set_position
@@ -128,19 +155,28 @@ private:
   /// \param lcenter set as left node position
   /// \param rcenter set as reft node position
   /// \param rt current node
-  /// \param h current height
   void estimate_next_center(QPoint const &center, QPoint &lcenter,
                             QPoint &rcenter, QBST_node const *rt);
 
+  /// \brief adjust the position of the left child and right child
+  /// \param rt the node to adjust
+  /// it adjust according to the position of left tree and right tree
+  /// \return whether adjusted
   bool adjust_next_center(QBST_node *rt);
 
 private:
+  /// \brief the helper function to get the bound of a subtree
+  /// \param rt the root of the subtree
   void get_subtree_bound_helper(QBST_node const *rt) const;
   /// \brief record the leftmost relative position of the tree
   mutable int leftmost = 0;
   /// \brief record the rightmost relative position of the tree
   mutable int rightmost = 0;
 
+  /// \brief the centor position of the tree, record the position of the root
+  /// it is set bt set_position function, which set the tree according to the position
+  /// and adjust the tree, and adjust the root position.
+  /// no matter how it is set, center_position store the position of the root
   QPoint center_position;
 
   /// \brief we draw the node as a circle
@@ -156,11 +192,16 @@ private:
   /// \brief the height between node of different level
   static int constexpr BASE_HEIGHT = RADIUS + RADIUS + common::NODE_V_INTERVAL;
 
+  /// \brief the height between node of and the top of the render area
   static int constexpr DIS_FROM_CEIL = RADIUS + HINTERVAL;
 
+  /// \brief trivial as name
   static constexpr Qt::GlobalColor ROOT_COLOR = Qt::gray;
+  /// \brief trivial as name
   static constexpr Qt::GlobalColor LCHILD_COLOR = Qt::blue;
+  /// \brief trivial as name
   static constexpr Qt::GlobalColor RCHILD_COLOR = Qt::yellow;
+  /// \brief trivial as name
   static constexpr Qt::GlobalColor HL_COLOR = Qt::green;
 };
 

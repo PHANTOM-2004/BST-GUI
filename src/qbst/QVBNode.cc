@@ -1,3 +1,5 @@
+/// \file
+/// \brief the immplementation of QVBNode
 
 #include "qbst/QVBNode.hpp"
 #include "common.hpp"

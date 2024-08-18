@@ -35,6 +35,7 @@ enum {
   NODE_V_INTERVAL = 15,
 };
 
+/// \brief the duration of the highlight
 enum {
   WAITING_TIME = 1000, // s
 };

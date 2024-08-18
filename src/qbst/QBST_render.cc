@@ -1,3 +1,7 @@
+/// \file
+/// \brief the immplementation of the function
+/// related to the render of QBST
+
 #include "common.hpp"
 #include "qbst/QBST.hpp"
 

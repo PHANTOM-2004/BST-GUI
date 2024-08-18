@@ -75,6 +75,7 @@ private:
   /// \brief store the egde color
   Qt::GlobalColor _eg_color = Qt::red;
 
+  /// \brief color of the font
   static constexpr Qt::GlobalColor FONT_COLOR = Qt::black;
 };
 

@@ -78,15 +78,18 @@ public:
   /// \return the size of the tre
   inline int height() const { return BiTNode<T>::height(root()); }
 
-  /// \brief mid traverse
+  /// \brief mid order traverse
+  /// readonly
   /// \param f visit function for data
   void mid_traverse(std::function<void(T const &data)> f) const;
 
-  /// \brief mid traverse
+  /// \brief mid order traverse
+  /// readonly
   /// \param f visit function for node
   void mid_traverse(std::function<void(BiTNode<T> const *node)> f) const;
 
-  /// \brief mid traverse
+  /// \brief post order traverse
+  /// readonly
   /// \param f visit function for node
   void post_traverse(std::function<void(BiTNode<T> const *node)> f) const;
 
@@ -98,21 +101,31 @@ protected:
   int clear(BiTNode<T> *rt);
 
   /// \brief mid traverse
+  /// readonly
   /// \param rt the root of the subtree to visit
   /// \param f visit function for data
   void mid_traverse(std::function<void(T const &data)> f,
                     BiTNode<T> const *rt) const;
 
+  /// \brief mid traverse
+  /// \param rt the root of the subtree to visit
+  /// \param f visit function for data
   void mid_traverse(std::function<void(T &data)> f, BiTNode<T> *rt);
-
-  void mid_traverse(std::function<void(BiTNode<T>* node)> f, BiTNode<T> *rt);
 
   /// \brief mid traverse
   /// \param rt the root of the subtree to visit
   /// \param f visit function for node
+  void mid_traverse(std::function<void(BiTNode<T> *node)> f, BiTNode<T> *rt);
+
+  /// \brief mid traverse
+  /// readonly
+  /// \param rt the root of the subtree to visit
+  /// \param f visit function for node
   void mid_traverse(std::function<void(BiTNode<T> const *node)> f,
                     BiTNode<T> const *rt) const;
+
   /// \brief post order traverse
+  /// readonly
   /// \param rt the root of the subtree to visit
   /// \param f visit function for node
   void post_traverse(std::function<void(BiTNode<T> const *node)> f,
@@ -328,7 +341,8 @@ void BST<T>::mid_traverse(std::function<void(T &data)> f, BiTNode<T> *rt) {
 }
 
 template <Comparable T>
-void BST<T>::mid_traverse(std::function<void(BiTNode<T>* node)> f, BiTNode<T> *rt) {
+void BST<T>::mid_traverse(std::function<void(BiTNode<T> *node)> f,
+                          BiTNode<T> *rt) {
   if (!rt)
     return;
 

@@ -1,3 +1,7 @@
+/// \file 
+/// \brief the immplementation of the function
+/// related to the position adjustment of QBST
+
 #include "qbst/QBST.hpp"
 
 using qbst::QBST;

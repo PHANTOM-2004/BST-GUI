@@ -66,7 +66,7 @@ public:
   bool is_right() const;
   /// \brief check if it has no child
   bool no_child() const;
-
+  /// \brief check if it has both children
   bool has_both() const;
   /// \brief update the height of this node
   inline void update_height();
