@@ -18,7 +18,7 @@ void QBST::estimate_next_center(QPoint const &center, QPoint &lcenter,
   int step_x_l = base_width * (1 << hleft),
       step_x_r = base_width * (1 << hright), step_y = base_height;
 
-  if (std::abs(balance) > 1) {
+  if (std::abs(balance) > 1 || hleft <= 0 || hright <= 0) {
     step_x_l = base_width * (1 << mini_h);
     step_x_r = base_width * (1 << mini_h);
   }
@@ -28,12 +28,13 @@ void QBST::estimate_next_center(QPoint const &center, QPoint &lcenter,
 }
 
 bool QBST::adjust_next_center(QBST_node *rt) {
+  qDebug() << "Call at: " << rt->data().str();
+
   int rl_off = 0, lr_off = 0;
   // for left tree
   get_subtree_bound(rt->left());
   // we care about rbound
   lr_off = rightmost;
-
   // for right tree
   get_subtree_bound(rt->right());
   // we care about lbound
@@ -85,17 +86,19 @@ void QBST::adjust_position(QBST_node *rt) {
   if (!rt)
     return;
 
-  // when there is an empty subtree, no need to adjust
-  if (!rt->left() || !rt->right())
-    return;
+  qDebug() << "Adjust at " << rt->data().str();
 
-  adjust_next_center(rt);
+  // when there is an empty subtree, no need to adjust
+  if (rt->has_both())
+    adjust_next_center(rt);
 
   adjust_position(rt->_left);
   adjust_position(rt->_right);
 }
 
 void QBST::get_subtree_bound(QBST_node const *rt) {
+  Q_ASSERT(rt);
+
   qDebug() << "sub bound for: " << rt->data().str();
 
   leftmost = std::numeric_limits<int>::max();
@@ -112,8 +115,9 @@ void QBST::get_subtree_bound_helper(QBST_node const *rt) {
   leftmost = std::min(pos.x(), leftmost);
   rightmost = std::max(pos.x(), rightmost);
 
-  qDebug() << "l at " << rt->data().str() << " " << pos.x() << " " << leftmost;
-  qDebug() << "r at " << rt->data().str() << " " << pos.x() << " " << rightmost;
+  // qDebug() << "l at " << rt->data().str() << " " << pos.x() << " " <<
+  // leftmost; qDebug() << "r at " << rt->data().str() << " " << pos.x() << " "
+  // << rightmost;
 
   get_subtree_bound_helper(rt->left());
   get_subtree_bound_helper(rt->right());

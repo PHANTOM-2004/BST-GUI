@@ -13,8 +13,8 @@ RenderArea::RenderArea(QWidget *parent)
   this->tree = new QBST;
 
   tree->insert(QBST_data("50"));
-  tree->insert(QBST_data("120"));
-  tree->insert(QBST_data("200"));
+  tree->insert(QBST_data("150"));
+  tree->insert(QBST_data("260"));
   tree->insert(QBST_data("10"));
   tree->insert(QBST_data("96"));
   tree->insert(QBST_data("85"));
@@ -29,8 +29,9 @@ RenderArea::RenderArea(QWidget *parent)
   tree->insert(QBST_data("267"));
   tree->insert(QBST_data("129"));
   tree->insert(QBST_data("500"));
+  tree->insert(QBST_data("ZZZZ"));
 
-  tree->set_position({500, 50});
+  tree->set_position({1000, 50});
   tree->set_color();
 }
 

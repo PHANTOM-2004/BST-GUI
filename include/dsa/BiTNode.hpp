@@ -67,6 +67,7 @@ public:
   /// \brief check if it has no child
   bool no_child() const;
 
+  bool has_both() const;
   /// \brief update the height of this node
   inline void update_height();
   /// \brief update the height from this node and update above
@@ -153,6 +154,10 @@ template <Comparable T> int BiTNode<T>::height(BiTNode<T> const *node) {
 }
 
 template <Comparable T> T const &BiTNode<T>::data() const { return _data; }
+
+template <Comparable T> bool BiTNode<T>::has_both() const {
+  return _left && _right;
+}
 
 template <Comparable T> BiTNode<T> const *BiTNode<T>::left() const {
   return _left;
