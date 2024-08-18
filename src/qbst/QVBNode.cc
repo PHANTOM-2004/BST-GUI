@@ -2,6 +2,7 @@
 #include "qbst/QVBNode.hpp"
 #include "common.hpp"
 #include <QDebug>
+#include <qfontmetrics.h>
 
 using qbst::QVBNode;
 
@@ -19,11 +20,26 @@ void QVBNode::render(QPainter *painter, int const radius) const {
   painter->drawEllipse(position(), radius, radius);
 
   // draw text
-
   // set font properties
+  painter->setPen(QPen(FONT_COLOR, common::LINE_WIDTH));
+
   QPoint const start = {position().x(), position().y()};
   auto f = painter->font();
   f.setPointSize(common::FONT_SIZE);
+  painter->setFont(f);
 
-  painter->drawText(start, str());
+  QFontMetrics const fmetric(f);
+
+  // Calculate bounding rectangle for the text
+  QRect textRect(0, 0, 2 * radius,
+                 2 * radius); // Assuming the text fits inside the circle
+
+  // Move the rectangle so it's
+  // centered at the circle's center
+  textRect.moveCenter(
+      position() +
+      QPoint(0, -fmetric.xHeight())); // Draw the text aligned to the
+                                      // center of the rectangle
+  Qt::AlignmentFlag alignment = Qt::AlignCenter;
+  painter->drawText(textRect, alignment, str());
 }

@@ -165,8 +165,8 @@ bool BST<T>::exist(BiTNode<T> const *target, BiTNode<T> const *rt) const {
   if (target == nullptr || rt == nullptr)
     return false;
   // find recursively
-  return rt == target || exist(target->left(), rt) ||
-         exist(target->right(), rt);
+  return rt == target || exist(target, rt->left()) ||
+         exist(target, rt->right());
 }
 
 template <Comparable T> bool BST<T>::exist(BiTNode<T> const *target) const {

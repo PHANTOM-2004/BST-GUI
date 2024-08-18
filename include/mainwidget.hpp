@@ -3,6 +3,7 @@
  */
 #pragma once
 
+#include <qlineedit.h>
 #ifndef MAINWIDGET_HPP
 #define MAINWIDGET_HPP
 
@@ -27,6 +28,7 @@ public:
   \param parent the parent of the widget
  */
   explicit MainWidget(QWidget *parent = nullptr);
+
 
 private:
   /// \brief pointer to scroll area

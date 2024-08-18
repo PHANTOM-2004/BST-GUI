@@ -74,6 +74,8 @@ private:
 
   /// \brief store the egde color
   Qt::GlobalColor _eg_color = Qt::red;
+
+  static constexpr Qt::GlobalColor FONT_COLOR = Qt::black;
 };
 
 }; // namespace qbst

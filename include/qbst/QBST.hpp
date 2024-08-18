@@ -3,6 +3,7 @@
 ///
 #pragma once
 
+#include "common.hpp"
 #include <qnamespace.h>
 #ifndef __QBST_HPP__
 #define __QBST_HPP__
@@ -65,15 +66,7 @@ public:
   /// \return whether or not it is deleted successfully
   bool erase(QVBNode const &val) override;
 
-  /// \brief get the width of the tree area
-  /// it will search the entire tree recursively to get the
-  /// tree width
-  ///
-  /// \return the width of the tree area
-  int get_width();
-  int get_subtree_width(QBST_node const *node);
-
-    /// \brief render the entire tree
+  /// \brief render the entire tree
   ///
   /// \param center the position of the root
   /// \param painter painter from painEvent()
@@ -87,8 +80,12 @@ public:
 
   void set_color();
 
+  void set_node_color(QBST_node* node);
+
+  void set_highlight_color(QBST_node *node);
+
 private:
-/// \brief adjust the position of each node of the tree
+  /// \brief adjust the position of each node of the tree
   ///
   /// after insertion/deletion, the area that the tree covers will
   /// change. we need to update through this function
@@ -136,10 +133,10 @@ private:
   mutable QPainter *painter = nullptr;
 
   /// \brief we draw the node as a circle
-  static int constexpr radius = 40;
+  static int constexpr radius = common::NODE_RADIUS;
 
   /// \brief it is the interval of the nodes at the bottom level
-  static int constexpr interval = 15;
+  static int constexpr interval = common::NODE_INTERVAL;
 
   /// \brief the basic width between the nodes center and its parent center
   /// at the bottom level
@@ -148,9 +145,10 @@ private:
   /// \brief the height between node of different level
   static int constexpr base_height = radius + radius + interval;
 
-  static constexpr Qt::GlobalColor ROOT_COLOR = Qt::black;
+  static constexpr Qt::GlobalColor ROOT_COLOR = Qt::gray;
   static constexpr Qt::GlobalColor LCHILD_COLOR = Qt::blue;
   static constexpr Qt::GlobalColor RCHILD_COLOR = Qt::yellow;
+  static constexpr Qt::GlobalColor HL_COLOR = Qt::green;
 };
 
 }; // namespace qbst

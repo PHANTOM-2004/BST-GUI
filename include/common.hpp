@@ -25,12 +25,18 @@ enum SCROLLAREA {
   SA_H = MW_H * 4 / 5,
 };
 
-/// \brief the shape of node to render 
-enum{
-  FONT_SIZE = 13,//pt
+/// \brief the shape of node to render
+enum {
+  FONT_SIZE = 13, // pt
   LINE_WIDTH = 3,
+  MAX_INPUT_LEN = 10,
+  NODE_RADIUS = 40,
+  NODE_INTERVAL = 15,
 };
 
+enum {
+  WAITING_TIME = 3, // s
+};
 
 }; // namespace common
 #endif

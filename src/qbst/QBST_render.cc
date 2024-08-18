@@ -1,6 +1,5 @@
 #include "common.hpp"
 #include "qbst/QBST.hpp"
-#include <limits>
 
 using qbst::QBST;
 using qbst::QBST_data;
@@ -28,7 +27,7 @@ void QBST::estimate_next_center(QPoint const &center, QPoint &lcenter,
 }
 
 bool QBST::adjust_next_center(QBST_node *rt) {
-  qDebug() << "Call at: " << rt->data().str();
+   // qDebug() << "Call ANC at: " << rt->data().str();
 
   int rl_off = 0, lr_off = 0;
   // for left tree
@@ -42,15 +41,15 @@ bool QBST::adjust_next_center(QBST_node *rt) {
 
   int const distance = rl_off - lr_off - 2 * radius - interval;
 
-  qDebug() << "l: " << lr_off << " r: " << rl_off
-           << " at: " << rt->data().position() << " With: " << rt->data().str()
-           << " Dis: " << distance;
-
-  qDebug() << "LCHILD: " << (rt->left() ? rt->left()->data().str() : "NULL")
-           << (rt->left() ? rt->left()->data().position() : QPoint(-1, -1));
-  qDebug() << "RCHILD: " << (rt->right() ? rt->right()->data().str() : "NULL")
-           << (rt->right() ? rt->right()->data().position() : QPoint(-1, -1));
-
+  // qDebug() << "l: " << lr_off << " r: " << rl_off
+  //          << " at: " << rt->data().position() << " With: " << rt->data().str()
+  //          << " Dis: " << distance;
+  //
+  // qDebug() << "LCHILD: " << (rt->left() ? rt->left()->data().str() : "NULL")
+  //          << (rt->left() ? rt->left()->data().position() : QPoint(-1, -1));
+  // qDebug() << "RCHILD: " << (rt->right() ? rt->right()->data().str() : "NULL")
+  //          << (rt->right() ? rt->right()->data().position() : QPoint(-1, -1));
+  //
   auto shift_lChild = [distance](QBST_data &data) {
     auto const pos = data.position();
     data.set_position(pos.x() + distance / 2, pos.y());
@@ -68,17 +67,24 @@ bool QBST::adjust_next_center(QBST_node *rt) {
   return true;
 }
 
-void QBST::set_color() {
-  auto color_set = [this](QBST_node *node) {
-    if (node == this->root()) {
-      node->_data._bg_color = ROOT_COLOR;
-    } else if (node->is_left()) {
-      node->_data._bg_color = LCHILD_COLOR;
-    } else if (node->is_right()) {
-      node->_data._bg_color = RCHILD_COLOR;
-    }
-  };
+void QBST::set_highlight_color(QBST_node *node) {
+  Q_ASSERT(exist(node));
+  node->_data._bg_color = HL_COLOR;
+}
 
+void QBST::set_node_color(QBST_node *node) {
+  // Q_ASSERT(exist(node));
+  if (node == this->root()) {
+    node->_data._bg_color = ROOT_COLOR;
+  } else if (node->is_left()) {
+    node->_data._bg_color = LCHILD_COLOR;
+  } else if (node->is_right()) {
+    node->_data._bg_color = RCHILD_COLOR;
+  }
+}
+
+void QBST::set_color() {
+  auto color_set = [this](QBST_node *node) { this->set_node_color(node); };
   mid_traverse(color_set, _root);
 }
 
@@ -86,7 +92,7 @@ void QBST::adjust_position(QBST_node *rt) {
   if (!rt)
     return;
 
-  qDebug() << "Adjust at " << rt->data().str();
+  // qDebug() << "Adjust at " << rt->data().str();
 
   // when there is an empty subtree, no need to adjust
   if (rt->has_both())
@@ -99,12 +105,13 @@ void QBST::adjust_position(QBST_node *rt) {
 void QBST::get_subtree_bound(QBST_node const *rt) {
   Q_ASSERT(rt);
 
-  qDebug() << "sub bound for: " << rt->data().str();
+  // qDebug() << "sub bound for: " << rt->data().str();
 
   leftmost = std::numeric_limits<int>::max();
   rightmost = std::numeric_limits<int>::min();
 
   get_subtree_bound_helper(rt);
+  // qDebug() << "sub bound end " << rt->data().str();
 }
 
 void QBST::get_subtree_bound_helper(QBST_node const *rt) {
@@ -118,9 +125,10 @@ void QBST::get_subtree_bound_helper(QBST_node const *rt) {
   // qDebug() << "l at " << rt->data().str() << " " << pos.x() << " " <<
   // leftmost; qDebug() << "r at " << rt->data().str() << " " << pos.x() << " "
   // << rightmost;
-
-  get_subtree_bound_helper(rt->left());
-  get_subtree_bound_helper(rt->right());
+  if (rt->left())
+    get_subtree_bound_helper(rt->left());
+  if (rt->right())
+    get_subtree_bound_helper(rt->right());
 }
 
 void QBST::set_position(QPoint const &center) {
@@ -130,18 +138,29 @@ void QBST::set_position(QPoint const &center) {
   estimate_position(center, this->_root);
 
   // so we need to adjust the position according to the tree
+  qDebug() << "Adjust1";
   adjust_position(this->_root);
+  // adjust twice
+  qDebug() << "Adjust2";
   adjust_position(this->_root);
+
+  qDebug() << "Adjust end";
+  // get the bound of the tree
+  get_subtree_bound(root());
+
+  qDebug() << "get bound end";
+  // int const width = rightmost - leftmost;
 }
 
 void QBST::estimate_position(QPoint const &center, QBST_node *rt) {
   // set the position of the tree node
   if (!rt)
     return;
+
   rt->_data.set_position(center.x(), center.y());
 
   Q_ASSERT(center.x() && center.y());
-  qDebug() << "estimate position: " << center << " with: " << rt->data().str();
+  // qDebug() << "estimate position: " << center << " with: " << rt->data().str();
 
   QPoint lcenter, rcenter;
   estimate_next_center(center, lcenter, rcenter, rt);

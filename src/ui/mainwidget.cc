@@ -4,10 +4,12 @@
 
 #include "mainwidget.hpp"
 #include "common.hpp"
+#include "renderarea.hpp"
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QLayout>
 #include <QVBoxLayout>
+#include <qlineedit.h>
 
 MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
   qDebug() << "Initializing MainWidget";
@@ -20,7 +22,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
   resize(common::MW_W, common::MW_H);
 
   //  init insert/find/delete button
-  static QString const tips = "Enter string(length < 20)";
+  static QString const tips =
+      QString("Enter string(length < %1)").arg(common::MAX_INPUT_LEN);
   insertInput = new QLineEdit(this);
   insertInput->setPlaceholderText(tips);
   insertButton = new QPushButton("Insert", this);
@@ -62,11 +65,20 @@ MainWidget::MainWidget(QWidget *parent) : QWidget{parent} {
 void MainWidget::on_insert_button_clicked() {
   qDebug() << "insert clicked";
   qDebug() << insertInput->text();
+  this->renderArea->update_handler(RenderArea::UPDATE_INSERT, insertInput->text());
 }
 
-void MainWidget::on_delete_button_clicked() { qDebug() << "delete clicked"; }
+void MainWidget::on_delete_button_clicked() {
+  qDebug() << "delete clicked";
+  qDebug() << deleteInput->text();
+  this->renderArea->update_handler(RenderArea::UPDATE_DELETE, deleteInput->text());
+}
 
-void MainWidget::on_find_button_clicked() { qDebug() << "find clicked"; }
+void MainWidget::on_find_button_clicked() {
+  qDebug() << "find clicked";
+  qDebug() << findInput->text();
+  this->renderArea->update_handler(RenderArea::UPDATE_SEARCH, findInput->text());
+}
 
 void MainWidget::initRenderArea() { renderArea = new RenderArea(this); }
 
