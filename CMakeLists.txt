@@ -25,7 +25,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   string(REGEX MATCH "[0-9]+\\.[0-9]+" GCC_VERSION ${GCC_VERSION_OUTPUT})
   list(GET GCC_VERSION 0 GCC_MAJOR_VERSION)
   message("g++ major version: ${GCC_MAJOR_VERSION}")
-  if(${GCC_MAJOR_VERSION} LESS 13)
+  if(${GCC_MAJOR_VERSION} LESS 12)
     message(FATAL_ERROR "[FAIL]g++ major version must be at least 13.")
   endif()
 
@@ -96,11 +96,11 @@ add_definitions(
 )
 
 ######################################################################
-add_compile_options(-Wall -Werror)
+add_compile_options(-Wall -Werror -static)
 ######################################################################
-file(GLOB_RECURSE HPP_SOURCES "include/*.hpp")
+file(GLOB_RECURSE HPP_SOURCES "include/*.hpp" "resources/*.html")
 file(GLOB_RECURSE CC_SOURCES "src/*.cc")
-file(GLOB_RECURSE QT_RESOURCES "resources/*" "src/*.ui")
+file(GLOB_RECURSE QT_RESOURCES "src/*.ui")
 
 include_directories("include" "resources")
 

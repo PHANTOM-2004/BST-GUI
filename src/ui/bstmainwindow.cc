@@ -29,22 +29,9 @@ BstMainWindow::BstMainWindow(QWidget *parent) : QMainWindow{parent} {
 }
 
 void BstMainWindow::initCmpInfo() {
-  static QString const help_content = R"(
-    <h2>We compare the sring as below</h2>
-    <p>
-    When the length of s1 is not equal to s2, 
-    <strong><i>the one with shorter length is smaller. </i></strong>
-    When the length of s1 is equal to s2, 
-    <strong><i>s1 and s2 are compared in dictionary order.</i></strong> 
-    </p>
-    <h2>Example</h2>
-    <i>
-    "a"   is <strong>smaller</strong> than "b"<br>
-    "aaa" is s<strong>maller than </strong>"123333"<br>
-    "288" is <strong>smaller than </strong>"123333"<br>
-    ""    is <strong>NOT smaller than </strong>""<br>
-    </i>
-  )";
+  static QString const help_content =
+#include "help.html"
+      ;
 
   cmpInfo = new QMessageBox(this);
   cmpInfo->setWindowTitle(tr("About String Comparison"));
@@ -59,21 +46,10 @@ void BstMainWindow::initCmpInfo() {
 
 void BstMainWindow::initBuildInfo() {
   static QString const newline = "<br>";
-  static QString const buildInfoTextFmt = R"(  
-<div>  
-    <strong>Compiler Information:</strong><br>  
-    <i>%1</i><br>  
-    <br>
-    <strong>Generator:</strong><br>  
-    <i>%2</i><br>  
-    <br>
-    <strong>CMake Version:</strong><br>  
-    <i>%3</i><br>
-    <br>
-    <strong>Qt Version:</strong><br>  
-    <i>%4</i> 
-</div>  
-)";
+  static QString const buildInfoTextFmt =
+#include "build.html"
+      ;
+
   static QString const compiler_info =
       QString(COMPILER_VERION).replace("\n", newline);
   static QString const generator_info =
@@ -94,17 +70,9 @@ void BstMainWindow::initBuildInfo() {
 }
 
 void BstMainWindow::initSoftwareInfo() {
-  static QString const softwareInfoText = R"(
-    <div>
-    <strong>Author</strong><br>
-    YT Chen, Tongji University<br>
-    Profile: <a href="https://github.com/PHANTOM-2004">My Github Profile</a><br>
-    <br>
-    <strong>Git Repo</strong><br>
-    <a href="https://github.com/PHANTOM-2004/BST-GUI">GitHub</a>. 
-    If you like it please give me a star
-    </div>
-  )";
+  static QString const softwareInfoText =
+#include "profile.html"
+      ;
 
   softwareInfo = new QMessageBox(this);
   softwareInfo->setWindowTitle(tr("Software Information"));
