@@ -5,6 +5,7 @@
 
 #ifndef __COMMON_HPP__
 #define __COMMON_HPP__
+#include <qnamespace.h>
 namespace common {
 /// \brief the size of mainwindow
 enum MAINWINDOW {
@@ -14,8 +15,8 @@ enum MAINWINDOW {
 
 /// \brief the size of render area
 enum RENDERAREA {
-  RA_W = 1000,
-  RA_H = 1000,
+  RA_W = 2000,
+  RA_H = 2000,
 };
 
 /// \brief the size of scroll area
@@ -29,6 +30,7 @@ enum{
   FONT_SIZE = 13,//pt
   LINE_WIDTH = 3,
 };
+
 
 }; // namespace common
 #endif

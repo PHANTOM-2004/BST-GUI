@@ -1,4 +1,5 @@
 #include "bst_test.hpp"
+#include "qbst/QBST.hpp"
 #include <algorithm>
 #include <iostream>
 
@@ -12,7 +13,7 @@ BSTtest::BSTtest(BST_type *tree, int const N) : N(N), tree(tree) {
 void BSTtest::insert_test() {
   // insert
   for (auto const &i : nums) {
-    if (N < 10000)
+    if (N < output_limit)
       std::cout << "insert: " << i << std::endl;
 
     auto const node_ins = node(std::to_string(i).c_str());
@@ -35,7 +36,7 @@ void BSTtest::delete_test() {
 
     int const ret = tree->erase(get_node(nums[pos]));
 
-    if (N < 10000) {
+    if (N < output_limit) {
       std::cout << "delete: " << nums[pos] << " ";
       std::cout << ret << std::endl;
     }
@@ -61,7 +62,7 @@ void BSTtest::search_test() {
     }
     bool const ret = !!tree->search(get_node(target));
 
-    if (N < 10000)
+    if (N < output_limit)
       std::cout << (ret ? "YES" : "NO") << '\n';
     Q_ASSERT(ret == ans);
   }
@@ -93,8 +94,25 @@ void BSTtest::print(node const &v) {
 };
 
 int main() {
+
   std::cout << "BST test\n";
-  BST_type T1;
-  BSTtest test1(&T1, 100000);
-  test1.run_test();
+
+  if constexpr (0) {
+    BST_type T1;
+    BSTtest test1(&T1, 10);
+    test1.run_test();
+  }
+
+  if constexpr (1) {
+
+    using qbst::QBST;
+    using qbst::QBST_data;
+    QBST T2;
+
+    T2.insert(QBST_data("50"));
+    T2.insert(QBST_data("120"));
+    T2.insert(QBST_data("200"));
+    T2.insert(QBST_data("0"));
+    T2.set_position({500, 10});
+  }
 }

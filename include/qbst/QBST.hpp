@@ -3,6 +3,7 @@
 ///
 #pragma once
 
+#include <qnamespace.h>
 #ifndef __QBST_HPP__
 #define __QBST_HPP__
 
@@ -27,8 +28,9 @@ using QBST_data = QVBNode;
 /// We inherit QObject inorder to use signal and slots
 /// when the insert/delete button is trigger, the tree need to
 /// adjust its position
-class QBST : public QObject, public QBST_base {
-  Q_OBJECT
+class QBST : public QBST_base {
+
+  friend class BSTtest;
 
 public:
   /// \brief default constructor
@@ -69,27 +71,30 @@ public:
   ///
   /// \return the width of the tree area
   int get_width();
+  int get_subtree_width(QBST_node const *node);
 
-  /// \brief adjust the position of each node of the tree
-  ///
-  /// after insertion/deletion, the area that the tree covers will
-  /// change. we need to update through this function
-  ///
-  /// \param center the position of the root
-  void adjust_position(QPoint const &center);
-
-  /// \brief render the entire tree
+    /// \brief render the entire tree
   ///
   /// \param center the position of the root
   /// \param painter painter from painEvent()
   void render(QPoint const &center, QPainter *painter);
 
-private:
   /// \brief set the position of each node of the tree
   /// according to the center
   ///
   /// \param center the position of the root
   void set_position(QPoint const &center);
+
+  void set_color();
+
+private:
+/// \brief adjust the position of each node of the tree
+  ///
+  /// after insertion/deletion, the area that the tree covers will
+  /// change. we need to update through this function
+  ///
+  /// \param center the position of the root
+  void adjust_position(QBST_node *rt);
 
   /// \brief set the painter
   void set_painter(QPainter *painter) const;
@@ -98,14 +103,13 @@ private:
   /// \param center position of param rt
   /// \param rt current node to set
   /// \param h current height
-  void get_width_helper(QPoint const &center, QBST_node const *rt, int const h);
+  void get_subtree_bound(QBST_node const *rt);
 
   /// \brief helper function to get position
   /// \param center position of param rt
   /// \param rt current node to set
   /// \param h current height
-  static void set_position_helper(QPoint const &center, QBST_node *rt,
-                                  int const h);
+  void estimate_position(QPoint const &center, QBST_node *rt);
 
   /// \brief helper function for get_width and set_position
   ///
@@ -116,11 +120,13 @@ private:
   /// \param rcenter set as reft node position
   /// \param rt current node
   /// \param h current height
-  static void get_next_center(QPoint const &center, QPoint &lcenter,
-                              QPoint &rcenter, int const h,
-                              QBST_node const *rt);
+  void estimate_next_center(QPoint const &center, QPoint &lcenter,
+                            QPoint &rcenter, QBST_node const *rt);
+
+  bool adjust_next_center(QBST_node *rt);
 
 private:
+  void get_subtree_bound_helper(QBST_node const *rt);
   /// \brief record the leftmost relative position of the tree
   int leftmost = 0;
   /// \brief record the rightmost relative position of the tree
@@ -130,17 +136,21 @@ private:
   mutable QPainter *painter = nullptr;
 
   /// \brief we draw the node as a circle
-  static int constexpr radius = 20;
+  static int constexpr radius = 40;
 
   /// \brief it is the interval of the nodes at the bottom level
-  static int constexpr interval = 5;
+  static int constexpr interval = 15;
 
   /// \brief the basic width between the nodes center and its parent center
   /// at the bottom level
   static int constexpr base_width = radius + interval;
 
   /// \brief the height between node of different level
-  static int constexpr base_height = radius + radius + 50;
+  static int constexpr base_height = radius + radius + interval;
+
+  static constexpr Qt::GlobalColor ROOT_COLOR = Qt::black;
+  static constexpr Qt::GlobalColor LCHILD_COLOR = Qt::blue;
+  static constexpr Qt::GlobalColor RCHILD_COLOR = Qt::yellow;
 };
 
 }; // namespace qbst

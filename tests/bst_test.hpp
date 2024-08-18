@@ -23,6 +23,7 @@ private:
   void insert_test();
   void delete_test();
   void search_test();
+  void position_test();
   void generate();
   static void print(node const &v);
   inline static node get_node(int const number) {
@@ -33,5 +34,7 @@ private:
   int const N;
   std::vector<int> nums;
   BST_type *tree;
+
+  static constexpr int output_limit = 10000;
 };
 #endif

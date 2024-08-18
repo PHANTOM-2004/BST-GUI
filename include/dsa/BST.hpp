@@ -53,7 +53,6 @@ public:
   /// \brief judge node in tree
   bool exist(BiTNode<T> const *target) const;
 
-
   /// \brief const getter for root
   inline BiTNode<T> const *root() const { return _root; }
 
@@ -87,8 +86,11 @@ public:
   /// \param f visit function for node
   void mid_traverse(std::function<void(BiTNode<T> const *node)> f) const;
 
-private:
+  /// \brief mid traverse
+  /// \param f visit function for node
+  void post_traverse(std::function<void(BiTNode<T> const *node)> f) const;
 
+protected:
   /// \brief clear the tree rooted as rt
   ///
   /// \param rt the root of the subtree to clear
@@ -101,11 +103,20 @@ private:
   void mid_traverse(std::function<void(T const &data)> f,
                     BiTNode<T> const *rt) const;
 
+  void mid_traverse(std::function<void(T &data)> f, BiTNode<T> *rt);
+
+  void mid_traverse(std::function<void(BiTNode<T>* node)> f, BiTNode<T> *rt);
+
   /// \brief mid traverse
   /// \param rt the root of the subtree to visit
   /// \param f visit function for node
   void mid_traverse(std::function<void(BiTNode<T> const *node)> f,
                     BiTNode<T> const *rt) const;
+  /// \brief post order traverse
+  /// \param rt the root of the subtree to visit
+  /// \param f visit function for node
+  void post_traverse(std::function<void(BiTNode<T> const *node)> f,
+                     BiTNode<T> const *rt) const;
 
   /// \brief helper function
   ///
@@ -287,6 +298,44 @@ void BST<T>::mid_traverse(std::function<void(T const &data)> f,
   f(rt->data());
   mid_traverse(f, rt->right());
 }
+template <Comparable T>
+void BST<T>::post_traverse(std::function<void(BiTNode<T> const *node)> f,
+                           BiTNode<T> const *rt) const {
+  if (!rt)
+    return;
+
+  mid_traverse(f, rt->left());
+  mid_traverse(f, rt->right());
+  f(rt);
+}
+
+template <Comparable T>
+void BST<T>::post_traverse(
+    std::function<void(BiTNode<T> const *node)> f) const {
+  if (empty())
+    return;
+  post_traverse(f, root());
+}
+
+template <Comparable T>
+void BST<T>::mid_traverse(std::function<void(T &data)> f, BiTNode<T> *rt) {
+  if (!rt)
+    return;
+
+  mid_traverse(f, rt->_left);
+  f(rt->_data);
+  mid_traverse(f, rt->_right);
+}
+
+template <Comparable T>
+void BST<T>::mid_traverse(std::function<void(BiTNode<T>* node)> f, BiTNode<T> *rt) {
+  if (!rt)
+    return;
+
+  mid_traverse(f, rt->_left);
+  f(rt);
+  mid_traverse(f, rt->_right);
+}
 
 template <Comparable T>
 void BST<T>::mid_traverse(std::function<void(BiTNode<T> const *node)> f,
@@ -303,7 +352,7 @@ template <Comparable T>
 void BST<T>::mid_traverse(std::function<void(BiTNode<T> const *node)> f) const {
   if (empty())
     return;
-  mid_traverse(f);
+  mid_traverse(f, root());
 }
 
 template <Comparable T>

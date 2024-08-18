@@ -64,6 +64,8 @@ public:
   bool is_left() const;
   /// \brief check whether it is right child
   bool is_right() const;
+  /// \brief check if it has no child
+  bool no_child() const;
 
   /// \brief update the height of this node
   inline void update_height();
@@ -131,6 +133,10 @@ BiTNode<T> *BiTNode<T>::insert_as_right(BiTNode<T> *parent) {
 template <Comparable T>
 BiTNode<T> *BiTNode<T>::insert_as_left(BiTNode<T> *parent) {
   return parent->_left = this;
+}
+
+template <Comparable T> bool BiTNode<T>::no_child() const {
+  return !_left && !_right;
 }
 
 template <Comparable T> bool BiTNode<T>::is_right() const {

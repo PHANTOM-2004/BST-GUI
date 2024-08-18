@@ -73,7 +73,6 @@ set(CMAKE_AUTORCC ON)
 ######################################################################
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
@@ -98,7 +97,6 @@ add_definitions(
 
 ######################################################################
 add_compile_options(-Wall -Werror)
-
 ######################################################################
 file(GLOB_RECURSE HPP_SOURCES "include/*.hpp")
 file(GLOB_RECURSE CC_SOURCES "src/*.cc")
@@ -108,7 +106,6 @@ include_directories("include" "resources")
 
 set(PROJECT_SOURCES
         ${HPP_SOURCES}
-        ${TCC_SOURCES}
         ${CC_SOURCES}
         ${QT_RESOURCES}
 )
@@ -127,7 +124,6 @@ qt_add_executable(BST
 target_link_libraries(BST PRIVATE Qt6::Widgets)
 
 qt_finalize_executable(BST)
-
 
 ######################################################################
 add_subdirectory(tests)
