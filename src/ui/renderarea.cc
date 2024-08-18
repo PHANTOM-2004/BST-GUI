@@ -7,12 +7,16 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QPainter>
+#include <QTimer>
 #include <chrono>
 #include <ctime>
 
 RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
   resize(common::RA_W, common::RA_H);
   this->tree = new QBST;
+  this->timer = new QTimer(this);
+
+  connect(timer, &QTimer::timeout, this, &RenderArea::unhighlight);
 
   tree->insert(QBST_data("50"));
   tree->insert(QBST_data("150"));
@@ -49,17 +53,23 @@ void RenderArea::rerender() {
 }
 
 void RenderArea::unhighlight() {
+  if (!hl_valid)
+    return;
+
   tree->set_color();
   hl_valid = false;
+
+  this->repaint();
 }
 
 void RenderArea::highlight() {
   hl_valid = true;
   tree->set_highlight_color(target);
 
-  // set begin time
-  time_begin = std::chrono::time_point_cast<std::chrono::milliseconds>(
-      std::chrono::system_clock::now());
+  timer->setInterval(common::WAITING_TIME);
+  timer->start();
+
+  this->repaint();
 }
 
 void RenderArea::update_handler(U_signals const signal, QString const &text) {
@@ -117,17 +127,6 @@ void RenderArea::paintEvent(QPaintEvent *event) {
   //
   // painter.drawText(50 + 400 / 2, 150 + 200 / 2, "Hell World!");
   //
-
-  if (hl_valid) {
-    auto const time_now =
-        std::chrono::time_point_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now());
-    auto const duration = time_now - time_begin;
-    qDebug() << duration.count();
-    if (duration.count() >= 1500) {
-      unhighlight();
-    }
-  }
 
   tree->render({1000, 10}, &painter);
 }

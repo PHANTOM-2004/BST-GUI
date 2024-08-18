@@ -35,7 +35,7 @@ enum {
 };
 
 enum {
-  WAITING_TIME = 3, // s
+  WAITING_TIME = 1000, // s
 };
 
 }; // namespace common

@@ -39,8 +39,7 @@ protected:
   bool hl_valid = false;
   qbst::QBST_node *target;
 
-  std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>
-      time_begin;
+  QTimer *timer;
 
 signals:
 };
