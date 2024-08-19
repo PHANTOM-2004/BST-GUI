@@ -78,6 +78,6 @@ CMakeLists.txt.user*
 # -------------------------------
 .cache/
 !include/
-build/
+*build/
 compile_commands.json
 docs/
