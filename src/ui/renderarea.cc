@@ -47,6 +47,8 @@ RenderArea::RenderArea(QWidget *parent) : QWidget{parent} {
 }
 
 void RenderArea::focus_on_target() {
+  if (tree->empty())
+    return;
   // if there is a target, focus on target
   //
   // else focus on root
@@ -57,6 +59,9 @@ void RenderArea::focus_on_target() {
 }
 
 void RenderArea::adjust_render_size() {
+  if (tree->empty())
+    return;
+
   // suppose we place it in the center
   tree->set_position({width() / 2, tree->dis_from_ceil()});
 
@@ -91,7 +96,8 @@ void RenderArea::rerender() {
 }
 
 void RenderArea::unhighlight() {
-  if (!hl_valid)
+
+  if (!hl_valid || tree->empty())
     return;
 
   tree->set_color();
