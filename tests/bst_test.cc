@@ -113,6 +113,6 @@ int main() {
     T2.insert(QBST_data("120"));
     T2.insert(QBST_data("200"));
     T2.insert(QBST_data("0"));
-    T2.set_position({500, 10});
+    T2.set_position({500, 100000});
   }
 }

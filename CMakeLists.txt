@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(BST VERSION 0.1 LANGUAGES CXX)
-cmake_minimum_required(VERSION 3.10)
-project(MyProject)
 
 message("[CHECK]Running environment checking")
 ######################################################################
@@ -22,12 +20,13 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     OUTPUT_VARIABLE GCC_VERSION_OUTPUT
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-  string(REGEX MATCH "[0-9]+\\.[0-9]+" GCC_VERSION ${GCC_VERSION_OUTPUT})
-  list(GET GCC_VERSION 0 GCC_MAJOR_VERSION)
+  string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]?" GCC_VERSION ${GCC_VERSION_OUTPUT})
+  string(REGEX MATCH "^([0-9]+)" GCC_MAJOR_VERSION ${GCC_VERSION})
   message("g++ major version: ${GCC_MAJOR_VERSION}")
   if(${GCC_MAJOR_VERSION} LESS 12)
     message(FATAL_ERROR "[FAIL]g++ major version must be at least 13.")
   endif()
+  set(COMPILER_VERSION_OUTPUT "g++ ${GCC_VERSION}")
 
   # clang++
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -37,14 +36,14 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     OUTPUT_VARIABLE CLANG_VERSION_OUTPUT
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-  string(REGEX MATCH "[0-9]+\\.[0-9]+" CLANG_VERSION ${CLANG_VERSION_OUTPUT})
-  list(GET CLANG_VERSION 0 CLANG_MAJOR_VERSION)
+  string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]?" CLANG_VERSION ${CLANG_VERSION_OUTPUT})
+  string(REGEX MATCH "^([0-9]+)" CLANG_MAJOR_VERSION ${CLANG_VERSION})
   message("clang++ major version: ${CLANG_MAJOR_VERSION}")
-  if(${CLANG_MAJOR_VERSION} LESS 14)
+  if(${CLANG_MAJOR_VERSION} LESS 14.0.0)
     message(FATAL_ERROR
     "[FAIL]clang++ major version must be at least 14.Current: ${CLANG_MAJOR_VERSION}")
   endif()
-
+  set(COMPILER_VERSION_OUTPUT "clang++ ${CLANG_VERSION}")
   # error
 else()
   message(FATAL_ERROR
@@ -75,28 +74,19 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-
 ######################################################################
-execute_process(
-  COMMAND ${CMAKE_CXX_COMPILER} --version
-  OUTPUT_VARIABLE COMPILER_VERSION_OUTPUT
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-string(REPLACE "\n" "\\n" COMPILER_VERSION_OUTPUT_1L "${COMPILER_VERSION_OUTPUT}")
 message("compiler information:\n${COMPILER_VERSION_OUTPUT}")
-
 message("generator information: ${CMAKE_GENERATOR}")
 message("cmake information: version ${CMAKE_VERSION}")
 
-add_definitions(
-  -DCOMPILER_VERION="${COMPILER_VERSION_OUTPUT_1L}"
+add_compile_definitions(
+  -DCOMPILER_VERION="${COMPILER_VERSION_OUTPUT}"
   -DGENERATOR="${CMAKE_GENERATOR}"
   -DCMAKE_VERSION="${CMAKE_VERSION}"
   -DQT6_VERSION="${QT_VERSION}"
+  -DQT_NO_DEBUG_OUTPUT
 )
 
-######################################################################
-add_compile_options(-Wall -Werror -static)
 ######################################################################
 file(GLOB_RECURSE HPP_SOURCES "include/*.hpp" "resources/*.html")
 file(GLOB_RECURSE CC_SOURCES "src/*.cc")
@@ -120,6 +110,8 @@ qt_add_executable(BST
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
+
+target_compile_options(BST PUBLIC -Wall -Werror -static)
 
 target_link_libraries(BST PRIVATE Qt6::Widgets)
 

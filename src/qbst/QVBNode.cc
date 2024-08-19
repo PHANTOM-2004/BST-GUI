@@ -25,7 +25,6 @@ void QVBNode::render(QPainter *painter, int const radius) const {
   // set font properties
   painter->setPen(QPen(FONT_COLOR, common::LINE_WIDTH));
 
-  QPoint const start = {position().x(), position().y()};
   auto f = painter->font();
   f.setPointSize(common::FONT_SIZE);
   painter->setFont(f);
