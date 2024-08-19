@@ -14,6 +14,17 @@ Binary Search Tree Visualization
 `ninja version 1.12.1`
 `qt6   version 6.7.2`
 
+## Platform
+Tested on `archlinux` and `Debian 12 bookworm`
+
+### `archlinux`
+`clang++(18)` with `gcc(14)`, `cmake(3.30)`
+`gcc(13)`,`cmake(3.30)`
+
+### `Debian 12`
+`clang++(14)` with `gcc(12)`, `cmake(3.25)`
+`gcc(12)`,`cmake(3.25)`
+
 ## Environment
 本项目在`archlinux`下构建, 只保证`linux`下的正常编译运行. 实际上我已经在构建脚本中做出了检查:
 - `g++ version >= 12.0.0`

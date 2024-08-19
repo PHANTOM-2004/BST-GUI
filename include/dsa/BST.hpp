@@ -8,7 +8,6 @@
 
 #include "dsa/BiTNode.hpp"
 #include <QDebug>
-#include <QtAssert>
 #include <functional>
 
 namespace dsa {

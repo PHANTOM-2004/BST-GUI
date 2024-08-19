@@ -80,11 +80,11 @@ message("generator information: ${CMAKE_GENERATOR}")
 message("cmake information: version ${CMAKE_VERSION}")
 
 add_compile_definitions(
-  -DCOMPILER_VERION="${COMPILER_VERSION_OUTPUT}"
-  -DGENERATOR="${CMAKE_GENERATOR}"
-  -DCMAKE_VERSION="${CMAKE_VERSION}"
-  -DQT6_VERSION="${QT_VERSION}"
-  -DQT_NO_DEBUG_OUTPUT
+  COMPILER_VERION="${COMPILER_VERSION_OUTPUT}"
+  GENERATOR="${CMAKE_GENERATOR}"
+  CMAKE_VERSION="${CMAKE_VERSION}"
+  QT6_VERSION="${QT_VERSION}"
+  QT_NO_DEBUG_OUTPUT
 )
 
 ######################################################################
