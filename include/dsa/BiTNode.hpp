@@ -34,7 +34,6 @@ template <Comparable T> class BiTNode {
   friend class qbst::QBST;
 
 public:
-
   /// \brief trivial constructor
   /// \param val value to store
   /// \param parent parent of the node
@@ -44,14 +43,14 @@ public:
           BiTNode<T> *lChild = nullptr, BiTNode<T> *rChild = nullptr);
 
   /// \brief get left child, readonly
-  inline BiTNode<T> const *left() const;
+  BiTNode<T> const *left() const;
   /// \brief get right child, readonly
-  inline BiTNode<T> const *right() const;
+  BiTNode<T> const *right() const;
   /// \brief get parent, readonly
-  inline BiTNode<T> const *parent() const;
+  BiTNode<T> const *parent() const;
   /// \brief get data, readonly
-  inline T const &data() const;
-  
+  T const &data() const;
+
   /// \brief get the successor according to mid traverse
   BiTNode<T> *succ();
 
@@ -69,12 +68,12 @@ public:
   /// \brief check if it has both children
   bool has_both() const;
   /// \brief update the height of this node
-  inline void update_height();
+  void update_height();
   /// \brief update the height from this node and update above
   void update_height_above();
 
   /// \brief get the height of the node, empty node is -1
-  static inline int height(BiTNode<T> const *node);
+  static int height(BiTNode<T> const *node);
 
 protected:
   /// \brief store the height of the node

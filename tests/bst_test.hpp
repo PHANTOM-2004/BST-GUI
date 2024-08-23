@@ -26,7 +26,7 @@ private:
   void position_test();
   void generate();
   static void print(node const &v);
-  inline static node get_node(int const number) {
+  static node get_node(int const number) {
     return node(std::to_string(number).c_str());
   }
 

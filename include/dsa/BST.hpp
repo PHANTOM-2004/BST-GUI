@@ -53,13 +53,13 @@ public:
   bool exist(BiTNode<T> const *target) const;
 
   /// \brief const getter for root
-  inline BiTNode<T> const *root() const { return _root; }
+  BiTNode<T> const *root() const { return _root; }
 
   /// \brief const getter for tree _size
   ///
   /// it record the number of nodes in the tree
   /// \return the size of the tree
-  inline int size() const {
+  int size() const {
     /// assertion of the size
     Q_ASSERT((!_size && !_root) || (_size && _root));
     return _size;
@@ -67,7 +67,7 @@ public:
 
   /// \brief return true the tree is empty
   /// \return true when the tree is empty
-  inline bool empty() const {
+  bool empty() const {
     /// assertion of the size
     Q_ASSERT((!_size && !_root) || (_size && _root));
     return !_size;
@@ -75,7 +75,7 @@ public:
 
   /// \brief getter for the tree height
   /// \return the size of the tre
-  inline int height() const { return BiTNode<T>::height(root()); }
+  int height() const { return BiTNode<T>::height(root()); }
 
   /// \brief mid order traverse
   /// readonly

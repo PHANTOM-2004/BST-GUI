@@ -27,7 +27,7 @@ public:
   QString const &str() const { return _val; }
 
   /// \brief operator<
-  inline bool operator<(QVBNode const &other) const {
+  bool operator<(QVBNode const &other) const {
     auto const l1 = this->str().length();
     auto const l2 = other.str().length();
     if (l1 != l2) {
@@ -37,9 +37,7 @@ public:
   }
 
   /// \brief operator==
-  inline bool operator==(QVBNode const &other) const {
-    return str() == other.str();
-  }
+  bool operator==(QVBNode const &other) const { return str() == other.str(); }
 
   /// \brief getter for _position
   QPoint const &position() const { return _position; }
@@ -62,7 +60,6 @@ public:
   void render(QPainter *painter, int const radius) const;
 
 private:
-
   /// \brief store the string
   QString _val;
 
