@@ -71,7 +71,7 @@ void RenderArea::adjust_render_size() {
   qDebug() << root_pos;
 
   int const new_w = bound_box.width() + tree->horizontal_interval() * 2;
-  int const new_h = bound_box.height() + tree->vertival_interval() * 2;
+  int const new_h = bound_box.height() + tree->vertical_interval() * 2;
 
   // shift the tree
   QPoint const offset =

@@ -114,7 +114,7 @@ public:
 
   /// \brief getter for BASE_HEIGHT
   /// \return trivial
-  static constexpr int vertival_interval() { return BASE_HEIGHT; }
+  static constexpr int vertical_interval() { return BASE_HEIGHT; }
 
   /// \brief getter for BASE_WIDTH
   /// \return trivial
